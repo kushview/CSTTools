@@ -1,0 +1,54 @@
+Mon Feb 19 2007
+
+This directory contains programs from the CST in Paris, France. 
+
+/**********
+toXYZ: this program takes an 8 bit or 16 bit RGB tiff file and transforms it into
+the X'Y'Z' 12 bit color space. It takes a gamma value if the input file is not in a 2.6
+gamma space. However the output file will be at 1/2.6 gamma. 
+
+There are 3 matrices that may be chosen from: the identity matrix, which can be used to see
+the error introduced by the log->linear->log conversions, the SMPTE DC28.30 (2006-02-24)
+matrix definition, and the StEM matrix definition. I found when I first wrote this program
+that when using the SMPTE matrix on the StEM material that the conversion was not exactly
+right. After looking around a bit I found on the following web page
+(http://www.cinematography.net/4KDemoOfFilmDigitalCinema.htm) a matrix that was used to
+produce the StEM material. Indeed, when this matrix is used, there is very little difference
+between the processed image and the reference StEM image.
+
+I used a LUT as using the power function on each component of each pixel is very expensive.
+The use of the LUT speeds up the process by 10 times (depending on the precision). (10s->
+1s/image). If you want to try the power function you  can use the -p switch.
+
+/**********
+tiffdiff: this program takes two input tiff files of the same size and outputs an absolute 
+difference image. 
+
+/**********
+tiffhist: This program will output the histogram of an 8 or 16 bit tiff file to stdout. 
+
+
+/**********
+Dependencies: 
+	You will need a libtiff library. This version compiles on libtiff-3.6.1 and
+libtiff-3.8.2. 
+
+Compiling:
+	modify the Makefile for location of tiff include files
+	make 
+
+Releases:
+********************************************
+0.91 - March 2007
+Corrected a bug in transformation of integers->float and back that made extreme values
+roll back to 0! 
+
+****************************************
+0.9 - Feb 2007
+Initial release
+
+
+Have fun,
+
+Rip
+roneil@cst.fr
